@@ -27,8 +27,9 @@ app.post("/chat", async (req, res) => {
     });
 
   } catch (err) {
-    res.status(500).json({ error: "AI failed" });
-  }
+  console.error("REAL ERROR:", err);
+  res.status(500).json({ error: err.message });
+}
 });
 
 app.listen(process.env.PORT || 3000, () => {
