@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
-
+console.log("NEW VERSION DEPLOYED");
 dotenv.config();
 
 const app = express();
