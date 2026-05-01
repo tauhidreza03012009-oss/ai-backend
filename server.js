@@ -44,13 +44,11 @@ app.post("/chat", async (req, res) => {
 
     res.json({ reply });
 
-  } catch (err) {
-    console.error("REAL ERROR:", err);
-
-    res.status(500).json({
-      error: err.message || "AI failed"
-    });
   }
+    catch (err) {
+  console.error(err.response?.data || err.message);
+  res.status(500).json({ error: err.message });
+}
 });
 
 // Start server
