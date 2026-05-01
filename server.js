@@ -33,7 +33,7 @@ app.post("/chat", async (req, res) => {
 
     // OpenAI call
     const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4.1-mini",
       messages: [
         { role: "system", content: "You are a helpful AI." },
         { role: "user", content: message }
