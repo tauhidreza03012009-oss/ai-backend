@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
-console.log("NEW VERSION DEPLOYED");
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+console.log("NEW VERSION DEPLOYED");
 // Middleware (REQUIRED)
 app.use(cors());
 app.use(express.json());
