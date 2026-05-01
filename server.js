@@ -27,28 +27,14 @@ app.post("/chat", async (req, res) => {
   try {
     const message = req.body.message;
 
-    if (!message) {
-      return res.status(400).json({ error: "No message provided" });
-    }
-
-    // OpenAI call
-    const response = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
-      messages: [
-        { role: "system", content: "You are a helpful AI." },
-        { role: "user", content: message }
-      ],
+    res.json({
+      reply: "Echo: " + message
     });
 
-    const reply = response.choices[0].message.content;
-
-    res.json({ reply });
-
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
-    catch (err) {
-  console.error(err.response?.data || err.message);
-  res.status(500).json({ error: err.message });
-}
 });
 
 // Start server
