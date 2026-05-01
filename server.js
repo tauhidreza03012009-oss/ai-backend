@@ -29,16 +29,14 @@ app.post("/chat", async (req, res) => {
   try {
     const message = req.body.message;
 
-    if (!message) {
-      return res.status(400).json({ error: "Message is required" });
-    }
+    console.log("USER MESSAGE:", message);
 
     const completion = await client.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
-          content: "You are a helpful, smart AI assistant."
+          content: "You are a helpful AI assistant."
         },
         {
           role: "user",
@@ -47,13 +45,23 @@ app.post("/chat", async (req, res) => {
       ]
     });
 
-    const reply = completion.choices[0].message.content;
+    console.log("OPENAI RAW RESPONSE:", completion);
+
+    const reply = completion.choices?.[0]?.message?.content;
+
+    if (!reply) {
+      return res.json({ reply: "No AI response received" });
+    }
 
     res.json({ reply });
 
   } catch (err) {
-    console.error("AI ERROR:", err);
-    res.status(500).json({ error: err.message });
+    console.error("FULL AI ERROR:", err);
+
+    res.status(500).json({
+      error: err.message,
+      hint: "Check OPENAI_API_KEY in Render environment variables"
+    });
   }
 });
 
