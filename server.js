@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-console.log("NEW VERSION DEPLOYED");
+console.log("AI SERVER STARTED");
 
 // Middleware
 app.use(cors());
@@ -21,10 +21,10 @@ const client = new OpenAI({
 
 // Health check
 app.get("/", (req, res) => {
-  res.send("Server is running");
+  res.send("AI Server is running");
 });
 
-// Chat route
+// REAL AI CHAT ROUTE
 app.post("/chat", async (req, res) => {
   try {
     const message = req.body.message;
@@ -33,23 +33,26 @@ app.post("/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    // Temporary echo response (safe fallback)
-    res.json({
-      reply: "Echo: " + message
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful, smart AI assistant."
+        },
+        {
+          role: "user",
+          content: message
+        }
+      ]
     });
 
-    // If you later enable OpenAI:
-    // const completion = await client.chat.completions.create({
-    //   model: "gpt-4o-mini",
-    //   messages: [{ role: "user", content: message }]
-    // });
+    const reply = completion.choices[0].message.content;
 
-    // res.json({
-    //   reply: completion.choices[0].message.content
-    // });
+    res.json({ reply });
 
   } catch (err) {
-    console.error(err);
+    console.error("AI ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
